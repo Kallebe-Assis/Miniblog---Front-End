@@ -1,6 +1,6 @@
 **GRUPO:**
-KALLEBE ASSIS NOGUEIRA
-SAMUEL CARDOSO DINIZ
+KALLEBE ASSIS NOGUEIRA,
+SAMUEL CARDOSO DINIZ,
 FELIPE CUNHA
 
 - - - / - - - / - - - / - - - / - - - / - - - / - - - / - - - / 
