@@ -1,27 +1,48 @@
 import React, { Component } from "react";
-import "../styles.css";
+import { Post, PostImg, TituloConteudo, PostTitulo, Popup, PopupTexto, BotaoFechar, ComponentePostsDiv, PostTexto, BotaoDeletar, BotaoLerMais, BotaoDiv } from "./../StyledComponents";
+
 
 class ComponentePosts extends Component {
   state = {
     titulo: "",
     conteudo: "",
     mostrarConteudoCompleto: false,
+    postSelecionado: null
   };
 
+  // handlePostCreation = () => {
+    // const { titulo, conteudo, imagem, posts, setPosts } = this.props;
+  // };
+
   // Função para alternar a exibição do conteúdo
-  alternarConteudo = () => {
-    this.setState((prevState) => ({
-      mostrarConteudoCompleto: !prevState.mostrarConteudoCompleto,
-    }));
+  abrirPopup = (post) => {
+    this.setState({
+      mostrarConteudoCompleto: true,
+      postSelecionado: post, //Define o post exibido no popup
+    });
+  };
+
+  fecharPopup = () => {
+    this.setState({
+      mostrarConteudoCompleto: false,
+      postSelecionado: null,
+    });
+  };
+
+  deletarPost = (id) => {
+    const novosPosts = this.props.posts.filter(post => post.id !== id);
+    this.props.setPosts(novosPosts);
   };
 
   render() {
     const { posts } = this.props; // Recebe os posts via props
-    const { mostrarConteudoCompleto } = this.state;
+    const { mostrarConteudoCompleto, postSelecionado } = this.state;
+
+    
 
     const imagemPadrao =
       "https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png";
-    const limiteDeCaracteres = 50;
+    const limiteDeCaracteres = 550;
 
     // Verifica se posts é um array e se existe
     if (!posts || !Array.isArray(posts)) {
@@ -29,32 +50,51 @@ class ComponentePosts extends Component {
     }
 
     return (
-      <div>
+      <ComponentePostsDiv>
         {posts.map((post, index) => (
-          <div key={index} className="post">
-            <div className="tituloConteudo">
-              <h2>{post.titulo}</h2>
-              <p>
-                {mostrarConteudoCompleto ||
-                post.conteudo.length <= limiteDeCaracteres
-                  ? post.conteudo
-                  : `${post.conteudo.substring(0, limiteDeCaracteres)}...`}
-              </p>
+          <Post key={post.id}>
 
-              {post.conteudo.length > limiteDeCaracteres && (
-                <button onClick={this.alternarConteudo}>
-                  {mostrarConteudoCompleto ? "Ler menos" : "Ler mais"}
-                </button>
-              )}
-            </div>
-
-            <img
+             <PostImg
               src={post.imagem || imagemPadrao}
               alt={post.titulo || "Imagem padrão"}
             />
-          </div>
+
+            <TituloConteudo>
+              <PostTitulo>{post.titulo}</PostTitulo>
+              <PostTexto>
+                {
+                post.conteudo.length <= limiteDeCaracteres
+                  ? post.conteudo
+                  : `${post.conteudo.substring(0, limiteDeCaracteres)}...`}
+              </PostTexto>
+
+              {post.conteudo.length > limiteDeCaracteres && (
+                <BotaoDiv onClick={this.alternarConteudo}>
+                  <BotaoLerMais onClick={() => this.abrirPopup(post)}>Ler mais</BotaoLerMais>
+                </BotaoDiv>
+              )}
+              <BotaoDiv>
+              <BotaoDeletar onClick={() => this.deletarPost(post.id)}>Deletar</BotaoDeletar>
+              </BotaoDiv>
+            </TituloConteudo>
+            
+              
+           
+              {mostrarConteudoCompleto && postSelecionado && (
+                <Popup>
+                  <PopupTexto>
+                    <h2>{postSelecionado.titulo}</h2>
+                    <p>{postSelecionado.conteudo}</p>
+
+                  </PopupTexto>
+                  <BotaoFechar onClick={this.fecharPopup}>FECHAR</BotaoFechar>
+
+                </Popup>
+              )}
+          </Post>
         ))}
-      </div>
+        
+      </ComponentePostsDiv>
     );
   }
 }

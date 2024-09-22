@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { InputsDiv, Input, TextArea, BotaoCriar } from "./../StyledComponents";
 
 class ComponenteInputs extends Component {
   state = {};
@@ -6,32 +7,35 @@ class ComponenteInputs extends Component {
   render() {
     return (
       <div>
-        <div className="inputs">
-          <input
+        {/* <GlobalStyle /> */}
+        <InputsDiv>
+          <Input
             type="text"
             placeholder="Insira o título do seu post"
             value={this.props.titulo}
             onChange={(e) => this.props.setTitulo(e.target.value)} // Atualiza o estado do título
-          ></input>
+            maxlength="50"
+          ></Input>
 
-          <textarea
+          <TextArea
             type="text"
             placeholder="Insira o conteúdo do seu post"
             value={this.props.conteudo}
             onChange={(e) => this.props.setConteudo(e.target.value)} // Atualiza o estado do conteúdo
-          ></textarea>
+          ></TextArea>
 
-          <input
+          <Input
             type="url"
             placeholder="Insira a imagem do seu post (Opcional)"
             value={this.props.imagem}
             onChange={(e) => this.props.setImagem(e.target.value)} // Atualiza o estado da imagem
-          ></input>
+          ></Input>
 
-          <button onClick={this.props.onClickNovoPost} className="botaoCriar">
+          <BotaoCriar type="submit" onClick={this.props.onClickNovoPost}>
             Criar Post
-          </button>
-        </div>
+          </BotaoCriar>
+        </InputsDiv>
+        
       </div>
     );
   }
